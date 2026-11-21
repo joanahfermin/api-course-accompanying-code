@@ -73,6 +73,10 @@ The port number differs on every machine. Use the one your terminal shows.
 | [`lesson17`](lesson17) | [A Data Project and the First Table with EF Core](https://joanahfermin.com/courses/api/ef-core-and-sqlite/) |
 | [`lesson18`](lesson18) | [The Books Service](https://joanahfermin.com/courses/api/the-books-service/) |
 | [`lesson19`](lesson19) | [Read Books: GET All and GET One](https://joanahfermin.com/courses/api/read-books/) |
+| [`lesson21`](lesson21) | [Errors the Professional Way](https://joanahfermin.com/courses/api/errors-the-professional-way/) |
+| [`lesson22`](lesson22) | [Create a Book: POST](https://joanahfermin.com/courses/api/create-a-book/) |
+| [`lesson23`](lesson23) | [Update and Delete: PUT and DELETE](https://joanahfermin.com/courses/api/update-and-delete/) |
+| [`lesson24`](lesson24) | [Business Rules and Meaningful Errors](https://joanahfermin.com/courses/api/business-rules-and-meaningful-errors/) |
 
 ## Back to the course
 
