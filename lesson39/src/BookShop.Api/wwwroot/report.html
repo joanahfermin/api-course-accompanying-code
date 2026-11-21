@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Stock report</title>
+</head>
+<body>
+  <h1>Stock report</h1>
+
+  <p id="message"></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Titles</th>
+        <th>Copies</th>
+        <th>Stock value</th>
+      </tr>
+    </thead>
+    <tbody id="report-rows"></tbody>
+  </table>
+
+  <script>
+    async function loadReport() {
+      const response = await fetch('/reports/stock');
+      if (!response.ok) {
+        document.getElementById('message').textContent =
+          'Could not load the report. The API answered ' + response.status + '.';
+        return;
+      }
+
+      const lines = await response.json();
+      const rows = document.getElementById('report-rows');
+
+      for (const line of lines) {
+        const row = rows.insertRow();
+        row.insertCell().textContent = line.category;
+        row.insertCell().textContent = line.titles;
+        row.insertCell().textContent = line.copies;
+        row.insertCell().textContent = line.stockValue.toFixed(2);
+      }
+    }
+
+    loadReport();
+  </script>
+</body>
+</html>

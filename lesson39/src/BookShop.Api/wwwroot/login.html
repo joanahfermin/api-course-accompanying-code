@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Log in</title>
+</head>
+<body>
+  <h1>Log in</h1>
+
+  <p id="message"></p>
+
+  <form id="login-form">
+    <p><label>User name <input name="userName"></label></p>
+    <p><label>Password <input name="password" type="password"></label></p>
+    <p><button type="submit">Log in</button></p>
+  </form>
+
+  <script>
+    const form = document.getElementById('login-form');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const response = await fetch('/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userName: form.elements.userName.value,
+          password: form.elements.password.value
+        })
+      });
+
+      if (!response.ok) {
+        const problem = await response.json();
+        document.getElementById('message').textContent = problem.title;
+        return;
+      }
+
+      const answer = await response.json();
+      sessionStorage.setItem('token', answer.token);
+      sessionStorage.setItem('role', answer.role);
+      sessionStorage.setItem('userName', form.elements.userName.value);
+      location.href = '/';
+    });
+  </script>
+</body>
+</html>
