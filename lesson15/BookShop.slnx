@@ -1,0 +1,5 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/BookShop.Api/BookShop.Api.csproj" />
+  </Folder>
+</Solution>
