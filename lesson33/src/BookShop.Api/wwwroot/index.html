@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Books</title>
+</head>
+<body>
+  <h1>Books</h1>
+
+  <p id="message"></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Category</th>
+      </tr>
+    </thead>
+    <tbody id="book-rows"></tbody>
+  </table>
+
+  <!-- the script: asks the API for the books -->
+  <script>
+    async function loadBooks() {
+      const response = await fetch('/books');
+      if (!response.ok) {
+        document.getElementById('message').textContent =
+          'Could not load the books. The API answered ' + response.status + '.';
+        return;
+      }
+
+      const books = await response.json();
+      const rows = document.getElementById('book-rows');
+      rows.replaceChildren();
+
+      for (const book of books) {
+        const row = rows.insertRow();
+        row.insertCell().textContent = book.title;
+        row.insertCell().textContent = book.author;
+        row.insertCell().textContent = book.price.toFixed(2);
+        row.insertCell().textContent = book.stock;
+        row.insertCell().textContent = book.category;
+      }
+    }
+
+    loadBooks();
+  </script>
+</body>
+</html>
