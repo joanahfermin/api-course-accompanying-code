@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Books from another address</title></head>
+<body>
+<h1>Books</h1>
+<p id="message">Loading...</p>
+<ul id="list"></ul>
+<script>
+const api = 'http://localhost:5101';
+
+async function load() {
+  const login = await fetch(api + '/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userName: 'bob', password: 'secret' })
+  });
+  const { token } = await login.json();
+
+  const response = await fetch(api + '/books', { headers: { Authorization: 'Bearer ' + token } });
+  const books = await response.json();
+
+  document.getElementById('message').textContent = '';
+  for (const book of books) {
+    const item = document.createElement('li');
+    item.textContent = book.title;
+    document.getElementById('list').append(item);
+  }
+}
+
+load().catch(error => {
+  document.getElementById('message').textContent = 'Failed: ' + error.message;
+});
+</script>
+</body>
+</html>
