@@ -1,0 +1,19 @@
+# Build output
+bin/
+obj/
+
+# SQLite database files (created by running the migration commands)
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# IDE and OS files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+.DS_Store
+Thumbs.db
