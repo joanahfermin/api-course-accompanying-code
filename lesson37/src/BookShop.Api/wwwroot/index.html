@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Books</title>
+</head>
+<body>
+  <h1>Books</h1>
+
+  <p id="message"></p>
+  <ul id="problems"></ul>
+
+  <form id="book-form" novalidate>
+    <input type="hidden" name="bookId">
+    <p><label>Title <input name="title"></label></p>
+    <p><label>Author <input name="author"></label></p>
+    <p><label>Price <input name="price" type="number" step="0.01"></label></p>
+    <p><label>Stock <input name="stock" type="number"></label></p>
+    <p><label>Category <input name="category"></label></p>
+    <p>
+      <button type="submit">Save</button>
+      <button type="button" id="cancel-edit" hidden>Cancel</button>
+    </p>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Category</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="book-rows"></tbody>
+  </table>
+
+  <script>
+    const form = document.getElementById('book-form');
+    const cancelButton = document.getElementById('cancel-edit');
+
+    async function loadBooks() {
+      const response = await fetch('/books');
+      if (!response.ok) {
+        await showProblem(response);
+        return;
+      }
+
+      const books = await response.json();
+      const rows = document.getElementById('book-rows');
+      rows.replaceChildren();
+
+      for (const book of books) {
+        const row = rows.insertRow();
+        row.insertCell().textContent = book.title;
+        row.insertCell().textContent = book.author;
+        row.insertCell().textContent = book.price.toFixed(2);
+        row.insertCell().textContent = book.stock;
+        row.insertCell().textContent = book.category;
+
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', () => startEdit(book));
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteBook(book));
+
+        row.insertCell().append(editButton, ' ', deleteButton);
+      }
+    }
+
+    function readBook() {
+      return {
+        title: form.elements.title.value,
+        author: form.elements.author.value,
+        price: Number(form.elements.price.value),
+        stock: Number(form.elements.stock.value),
+        category: form.elements.category.value
+      };
+    }
+
+    function startEdit(book) {
+      clearProblems();
+      form.elements.bookId.value = book.id;
+      form.elements.title.value = book.title;
+      form.elements.author.value = book.author;
+      form.elements.price.value = book.price;
+      form.elements.stock.value = book.stock;
+      form.elements.category.value = book.category;
+      cancelButton.hidden = false;
+    }
+
+    function stopEdit() {
+      form.reset();
+      form.elements.bookId.value = '';
+      cancelButton.hidden = true;
+    }
+
+    async function deleteBook(book) {
+      if (!confirm('Delete "' + book.title + '"?')) {
+        return;
+      }
+
+      clearProblems();
+      const response = await fetch('/books/' + book.id, { method: 'DELETE' });
+      if (response.ok) {
+        await loadBooks();
+      } else {
+        await showProblem(response);
+      }
+    }
+
+    function clearProblems() {
+      document.getElementById('message').textContent = '';
+      document.getElementById('problems').replaceChildren();
+    }
+
+    async function showProblem(response) {
+      const problem = await response.json();
+      document.getElementById('message').textContent = problem.title;
+
+      const list = document.getElementById('problems');
+      list.replaceChildren();
+      for (const messages of Object.values(problem.errors ?? {})) {
+        for (const text of messages) {
+          const item = document.createElement('li');
+          item.textContent = text;
+          list.append(item);
+        }
+      }
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      clearProblems();
+
+      const id = form.elements.bookId.value;
+      const response = await fetch(id ? '/books/' + id : '/books', {
+        method: id ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(readBook())
+      });
+
+      if (response.ok) {
+        stopEdit();
+        await loadBooks();
+      } else {
+        await showProblem(response);
+      }
+    });
+
+    cancelButton.addEventListener('click', stopEdit);
+
+    loadBooks();
+  </script>
+</body>
+</html>
