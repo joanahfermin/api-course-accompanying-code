@@ -4,7 +4,7 @@ The source code for the **API course** on [joanahfermin.com](https://joanahfermi
 
 The course builds one project, an online bookshop called **BookShop**. This repository holds the code as it stands after each lesson.
 
-> Work in progress. The code for the first lessons is being added now, and the rest follows in order.
+> Work in progress. The code for the first lessons is here now, and the rest follows in order.
 
 ## How the code is organised
 
@@ -13,9 +13,10 @@ Every lesson that changes the code has its own folder, named `lesson15`, `lesson
 ```text
 api-course-accompanying-code/
 ├── lesson15/
-│   └── BookShop.slnx
+│   ├── BookShop.slnx
+│   └── src/
 ├── lesson16/
-│   └── BookShop.slnx
+├── lesson17/
 └── ...
 ```
 
@@ -32,11 +33,46 @@ diff -r lesson18 lesson19
 - The [.NET 10 SDK](https://dotnet.microsoft.com/download)
 - Optional: [DB Browser for SQLite](https://sqlitebrowser.org/), to look inside the database
 
+## Open a folder and run it
+
+Pick the folder of the lesson you want. Open its `BookShop.slnx` in Visual Studio, or work in a terminal from inside the folder:
+
+```bash
+cd lesson19
+dotnet build
+```
+
+From lesson 17 on, the API uses a SQLite database. The database file is not in the repository. Create it with the lesson's migration command, after a first `dotnet build`:
+
+```bash
+dotnet ef database update --project src/BookShop.Data --startup-project src/BookShop.Api
+```
+
+(This needs the `dotnet-ef` tool: `dotnet tool install --global dotnet-ef --version 10.0.15`. The lessons explain it.)
+
+Run the API, then open the address it prints, for example `http://localhost:5027/books`. From lesson 16 on, `/scalar` is a page where you can try the endpoints.
+
+```bash
+dotnet run --project src/BookShop.Api
+```
+
+Run the tests (from lesson 18 on):
+
+```bash
+dotnet test
+```
+
+The port number differs on every machine. Use the one your terminal shows.
+
 ## Lessons
 
 | Folder | Lesson |
 |---|---|
-| _Coming soon_ | |
+| [`lesson15`](lesson15) | [Create the Solution and the API Project](https://joanahfermin.com/courses/api/create-the-solution/) |
+| [`lesson16`](lesson16) | [The First Endpoint and Swagger](https://joanahfermin.com/courses/api/first-endpoint-and-swagger/) |
+| [`lesson17`](lesson17) | [A Data Project and the First Table with EF Core](https://joanahfermin.com/courses/api/ef-core-and-sqlite/) |
+| [`lesson18`](lesson18) | [The Books Service](https://joanahfermin.com/courses/api/the-books-service/) |
+| [`lesson19`](lesson19) | [Read Books: GET All and GET One](https://joanahfermin.com/courses/api/read-books/) |
 
 ## Back to the course
 
