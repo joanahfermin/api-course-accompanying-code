@@ -77,3 +77,7 @@ The port number differs on every machine. Use the one your terminal shows.
 ## Back to the course
 
 Read the lessons at [joanahfermin.com/courses/api](https://joanahfermin.com/courses/api/).
+
+## Licence
+
+MIT. See [LICENSE](LICENSE).
