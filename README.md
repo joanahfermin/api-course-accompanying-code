@@ -64,6 +64,8 @@ dotnet test
 
 The port number differs on every machine. Use the one your terminal shows.
 
+From lesson 33 on, the web pages are in `src/BookShop.Api/wwwroot` and the API serves them: open `http://localhost:5027/` (your port) in a browser. From lesson 37 on, the API makes login tokens. The signing key in `appsettings.Development.json` is a made-up key for practice, which is fine only because it signs nothing real. Never reuse it, and never commit a real key.
+
 ## Lessons
 
 | Folder | Lesson |
@@ -83,6 +85,11 @@ The port number differs on every machine. Use the one your terminal shows.
 | [`lesson29`](lesson29) | [DTOs for the Books Endpoints](https://joanahfermin.com/courses/api/dtos-for-the-books-endpoints/) |
 | [`lesson30`](lesson30) | [More Validation Rules](https://joanahfermin.com/courses/api/more-validation-rules/) |
 | [`lesson31`](lesson31) | [Where Business Rules Live](https://joanahfermin.com/courses/api/where-business-rules-live/) |
+| [`lesson33`](lesson33) | [The First Web Page](https://joanahfermin.com/courses/api/the-first-web-page/) |
+| [`lesson34`](lesson34) | [The Books Screen](https://joanahfermin.com/courses/api/the-books-screen/) |
+| [`lesson35`](lesson35) | [The Report Screen](https://joanahfermin.com/courses/api/the-report-screen/) |
+| [`lesson37`](lesson37) | [The Login Endpoint](https://joanahfermin.com/courses/api/the-login-endpoint/) |
+| [`lesson38`](lesson38) | [Protect Endpoints and Roles](https://joanahfermin.com/courses/api/protect-endpoints-and-roles/) |
 
 ## Back to the course
 
