@@ -1,0 +1,95 @@
+using System.ComponentModel.DataAnnotations;
+using BookShop.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+[ApiController]
+[Route("books")]
+public class BooksController : ControllerBase
+{
+    private readonly IBookService _bookService;
+
+    public BooksController(IBookService bookService)
+    {
+        _bookService = bookService;
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<BookResponse>>> GetAll()
+    {
+        var books = await _bookService.GetAllAsync();
+        return books.Select(b => b.ToResponse()).ToList();
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType<BookResponse>(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<BookResponse>> GetById(int id)
+    {
+        var book = await _bookService.GetByIdAsync(id);
+        if (book == null)
+        {
+            return NotFound();
+        }
+        return book.ToResponse();
+    }
+
+    [HttpPost]
+    [ProducesResponseType<BookResponse>(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<BookResponse>> Create(BookRequest request)
+    {
+        var created = await _bookService.CreateAsync(request.ToBook());
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created.ToResponse());
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Update(int id, BookRequest request)
+    {
+        var found = await _bookService.UpdateAsync(id, request.ToBook());
+        if (!found)
+        {
+            return NotFound();
+        }
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var found = await _bookService.DeleteAsync(id);
+        if (!found)
+        {
+            return NotFound();
+        }
+        return NoContent();
+    }
+
+    [HttpPost("{id}/sell")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> Sell(int id, [BindRequired, Range(1, 1000)] int quantity)
+    {
+        var result = await _bookService.SellAsync(id, quantity);
+        if (result.Book == null)
+        {
+            return NotFound();
+        }
+        if (!result.Sold)
+        {
+            return Problem(
+                statusCode: StatusCodes.Status409Conflict,
+                title: "Not enough copies in stock.",
+                detail: $"Copies left of {result.Book.Title}: {result.Book.Stock}. You asked for {quantity}.",
+                type: "https://bookshop.example/errors/insufficient-stock");
+        }
+        return NoContent();
+    }
+}
