@@ -77,6 +77,12 @@ The port number differs on every machine. Use the one your terminal shows.
 | [`lesson22`](lesson22) | [Create a Book: POST](https://joanahfermin.com/courses/api/create-a-book/) |
 | [`lesson23`](lesson23) | [Update and Delete: PUT and DELETE](https://joanahfermin.com/courses/api/update-and-delete/) |
 | [`lesson24`](lesson24) | [Business Rules and Meaningful Errors](https://joanahfermin.com/courses/api/business-rules-and-meaningful-errors/) |
+| [`lesson26`](lesson26) | [The Stock Report](https://joanahfermin.com/courses/api/the-stock-report/) |
+| [`lesson27`](lesson27) | [Records](https://joanahfermin.com/courses/api/records/) |
+| [`lesson28`](lesson28) | [Small C# Shortcuts](https://joanahfermin.com/courses/api/small-csharp-shortcuts/) |
+| [`lesson29`](lesson29) | [DTOs for the Books Endpoints](https://joanahfermin.com/courses/api/dtos-for-the-books-endpoints/) |
+| [`lesson30`](lesson30) | [More Validation Rules](https://joanahfermin.com/courses/api/more-validation-rules/) |
+| [`lesson31`](lesson31) | [Where Business Rules Live](https://joanahfermin.com/courses/api/where-business-rules-live/) |
 
 ## Back to the course
 
