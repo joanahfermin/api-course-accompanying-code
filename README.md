@@ -42,7 +42,7 @@ cd lesson19
 dotnet build
 ```
 
-From lesson 17 on, the API uses a SQLite database. The database file is not in the repository. Create it with the lesson's migration command, after a first `dotnet build`:
+From lesson 17 on, the API uses a SQLite database. The database file is not in the repository. Create it with the lesson's migration command. Run `dotnet build` first: on a fresh copy, `dotnet ef` fails (`NETSDK1004`, "Assets file not found") until a build has restored the packages.
 
 ```bash
 dotnet ef database update --project src/BookShop.Data --startup-project src/BookShop.Api
